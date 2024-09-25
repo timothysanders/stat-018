@@ -105,6 +105,7 @@
 - Mathematical operations should be done in the following order
   1. Parentheses first
   2. Exponents
+     
   3. Multiplication and Division **FROM LEFT TO RIGHT**
   4. Addition and Subtraction **FROM LEFT TO RIGHT**
 #### Measurement Scales
@@ -164,6 +165,14 @@
   - If decimal remainder is equal to 1/2, round up if last digit is odd, otherwise, round down
     - Ex: 18.45 -> 18.4
     - Ex: 18.35 -> 18.4
+#### Exponents
+- Remember with exponents that a negative number raised to an even power is even, raised to an odd power is negative
+- For calculator, need to put the negative number in parentheses, ex: `(-1)^3`
+- For negative exponents, ex: `2^(-3)`, this is the same as `1/(2^3)`
+  - Negative exponent means to take the reciprocal of the number
+  - So for a fraction raised to a negative power, ex: `(2/3)^(-4)` becomes `(3/2)^4`
+- Fractional exponents, ex: `25^(1/2)` becomes the square root of 25
+  - Ex: `25^(1/3)` becomes the cubed root of `25^1`
 
 ## Video Notes
 ### Video 1: Crash Course Statistics Preview
