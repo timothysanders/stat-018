@@ -51,3 +51,87 @@ def find_quartile_value(quartile, array):
 ```
 
 ### Unit 2 Part A Overview of Central Tendency Quiz
+#### Question 1
+- Text: You have data measured on an interval / ratio scale of measurement.  There are no outliers in the data.  What is the most appropriate measure of central tendency to use in this situation? 
+- Answer: Mean
+#### Question 2
+- Text: You have data measured on an interval / ratio scale of measurement.  There are outliers in the data.  You do not care to exclude the effects of the outliers on the measure of central tendency.  What is the most appropriate measure of central tendency to use in this situation? 
+- Answer: Mean
+#### Question 3
+- Text: You have data measured on an interval / ratio scale of measurement.  There are outliers in the data.  You want to exclude the effects of the outliers on the measure of central tendency.  What is the most appropriate measure of central tendency to use in this situation? 
+- Answer: Median
+#### Question 4
+- Text: You have data measured on an ordinal scale of measurement.  What is the most appropriate measure of central tendency to use in this situation? 
+- Answer: Median
+#### Question 5
+- Text: You reported the Mode as your measure of Central Tendency.  What measure of Dispersion should you report?
+- Answer: Index of Dispersion
+#### Question 6
+- Text: You reported the Median as your measure of Central Tendency.  What measure of Dispersion should you report?
+- Answer:  Interquartile Range
+#### Question 7
+- Text: You reported the Mean as your measure of Central Tendency.  What measure of Dispersion should you report?
+- Answer:  Standard Deviation or Variance
+#### Question 8
+- Text: When the data are normally distributed, where is the mean located relative to the median? 
+- Answer: Mean and Median are at the same exact location.
+#### Question 9
+- Text: When the data are positively skewed, where is the mean located relative to the median? 
+- Answer: Mean located to the right of the median.
+#### Question 10
+- Text: When the data are negatively skewed, where is the mean located relative to the median?
+- Answer: Mean located to the left of the median.
+#### Question 11
+- Text: Which of the following measures of central tendency has exactly 50 percent of the scores falling below it and 50 percent of the scores falling above it? 
+- Answer: Median
+#### Question 12
+- Text: Which measures of central tendency is simply the name of the most frequently occurring category? 
+- Answer: Mode
+#### Question 13
+- Text: Which of the following measures of central tendency is the sum of the scores divided by the total number of scores?
+- Answer: Mean
+#### Question 14
+- Text: Which of the following measures of variability is the middle 50 percent of the data? 
+- Answer: Interquartile Range
+#### Question 15
+- Text: Which measure of variability has value equal to zero when every frequency is in one category and value equal to one when frequencies are equally distributed among all categories?
+- Answer: Index of Dispersion
+#### Question 16
+- Text: Which measure of central tendency should be used whenever it is possible to use it because it takes all of the data values into account?
+- Answer: Mean
+#### Question 17
+- Text: Which of the following has 25% of the scores falling below it?
+- Answer: Q1
+#### Question 18
+- Text: Which of the following has 75% of the scores falling below it?
+- Answer: Q3
+#### Question 19
+- Text: Which of the following has to do with the height of middle of the distribution and the height of the tails?
+- Answer: Kurtosis
+#### Question 20
+- Text: Which of the following has to do with the shift of the data either left or right?
+- Answer: Skew
+#### Question 21
+- Text: Which measure of dispersion reports the percent of dispersion in the data as compared to Maximal Dispersion. 
+- Answer: Index of Dispersion
+#### Question 22
+- Text: For a Continuous, Unimodal Distribution, moving from left to right, which of the following is the usual order of the mean, median, and mode for a positively skewed distribution. 
+- Answer: "Mode, Median, Mean"
+#### Question 23
+- Text: For a Continuous, Unimodal Distribution, moving from right to left, which of the following is the usual order of the mean, median, and mode for a negatively skewed distribution.
+- Answer: "Mode, Median, Mean"
+#### Question 24
+- Text: Which of the following is NOT true regarding the mean?
+- Answer:  The mean is good for data sets that contain outliers.
+#### Question 25
+- Text: In a Positively Skewed Distribution, the long tail is to the Right.
+- Answer: True
+#### Question 26
+- Text: In a Negatively Skewed Distribution, the long tail is to the Right.
+- Answer: False
+#### Question 27
+- Text: In a Normal Distribution, the Mean, Median, and Mode are at the same location. 
+- Answer: True
+#### Question 28
+- Text: The mean can only be used when the data are measured on an Interval/Ratio Scale of Measurement. 
+- Answer: True
