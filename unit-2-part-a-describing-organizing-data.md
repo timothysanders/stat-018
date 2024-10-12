@@ -29,25 +29,44 @@
   3. Count number of categories (K)
   4. Get sum of the frequencies squared (Σ*fi*<sup>2</sup>)
 
+## Z-scores
+- Allows you to compare different data sets, as long as they are normally distributed
+- Z-scores can be used to translates from one distribution to another
+  - For example, if someone has a z-score of 1.0 in another distribution
+    - x = x-bar + (s<sub>new</sub>)(z<sub>old</sub>)
+- Z-score percentile ranks
+  - Based on the normal curve
+  - Normal curves are symmetric, with mean, median, and mode at the same location
+
 ## Python Code
 ```python
 import numpy as np
+from scipy import stats
 
-def find_quartile_value(quartile, array):
+array_one = np.array([7, 7, 7, 3, 1])
+stats.kurtosis(array_one)
+stats.skew(array_one)
+stats.moment(array_one, 3)
+stats.moment(array_one, 4)
+
+def find_quartile_values(array):
     """
     Find the given quartile value for an array with an odd number of elements.
     """
-    def find_quartile_location(array, quartile):
-        quartile_location = quartile * (len(array) / 4)
+    def find_quartile_location(quartile_array, quartile):
+        quartile_location = quartile * (len(quartile_array) / 4)
         return quartile_location
     
     def get_lower_real_limit(number):
         return number - 0.5
-    
-    location = find_quartile_location(array, quartile)
-    location_value = np.sort(array)[int(location // 1)]
-    quartile_value = get_lower_real_limit(location_value) + (location % 1)
-    return quartile_value
+    result_json = {}
+    for loc in [1, 2, 3]:
+        location = find_quartile_location(array, loc)
+        location_value = np.sort(array)[int(location // 1)]
+        quartile_value = get_lower_real_limit(location_value) + (location % 1)
+        result_json[f"Q{loc}"] = {"location": location, "value": quartile_value}
+    result_json["IQR"] = result_json["Q3"]["value"] - result_json["Q1"]["value"]
+    return result_json
 ```
 
 ### Unit 2 Part A Overview of Central Tendency Quiz
