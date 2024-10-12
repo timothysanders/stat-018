@@ -11,6 +11,35 @@
 - When reporting mean, **ALWAYS** report standard deviation and variance (s and s<sup>2</sup>)
 - When reporting median, **ALWAYS** report Interquartile Range (IQR)
 
+### Median
+- 50% of scores above, 50% of scores below
+- Ex: x = 100, 89, 77, 63, 51, 44, 39, 25, 10
+- Quartiles
+  - "Q1" - first quartile
+    - Location = N/4
+    - If your data has nine values, then the location is 2.25
+    - For the data set x above, the value is 38.75
+  - "Q2" - second quartile
+    - Location = N/2 or 2(N/4)
+    - If data has nine values, then the location is 4.5
+    - For the data set x above, the value is 51.0
+  - "Q3" - third quartile
+    - Location = 3(N/4)
+    - For the data set x above, the value is 77.25
+  - Each quartile has a value and a location
+### Real limits of numbers
+- Every number extends from half a unit above to half a unit below
+  - These are called the "real limits of a number"
+  - ex. if the apparent limit is "70", then the real limits are 69.5 and 70.5
+  - ex. if the apparent limit = 25.5, then the real limits are 25.25 and 25.75
+- apparent limits of a number
+  - apparent limits are the number itself
+- real limits of a number
+- See page 36 of the text book for discussion of real limits
+
+### Interquartile Range (IQR)
+- IQR = Q3 - Q1
+
 ## Mode
 - `mode`: name of category with the highest frequency
 - Not a measure of the "center" of the data
@@ -67,6 +96,13 @@ def find_quartile_values(array):
         result_json[f"Q{loc}"] = {"location": location, "value": quartile_value}
     result_json["IQR"] = result_json["Q3"]["value"] - result_json["Q1"]["value"]
     return result_json
+
+x = np.array([100, 89, 77, 63, 51, 44, 39, 25, 10])
+x_median = np.median(x)
+
+x2 = np.array([91, 88, 72, 67, 51, 43, 20])
+x2_median = np.median(x2)
+x2_quartiles = None
 ```
 
 ### Unit 2 Part A Overview of Central Tendency Quiz
