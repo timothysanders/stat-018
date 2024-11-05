@@ -1,3 +1,5 @@
+from random import sample
+
 # Lecture Notes
 
 ## Representativeness
@@ -192,3 +194,250 @@
 ### Exponents
 - Exponent indicates repeated multiplication
 - Pick up on slide 21
+
+## Probability and Hypothesis Testing
+### Area Under the Normal Curve
+- Area between points under the curve corresponds to the proportion of people that fall between those points
+  - This is also the Probability of Randomly Selecting a person between the points on the curve
+- When doing hypothesis testing, you can divide outcomes by "Common Outcomes" and "Rare Outcomes"
+  - The dividing line is approximately +/- 2 standard deviations, with above 2 being "Rare"
+  - A "rare outcome" for someone with an IQ would be above 132 or below 68
+  - If you get a rare outcome, you may want to investigate "what is going on"
+- Research is never done on individuals, it is always done on groups
+  - Rule of thumb is that you need at least 20 individuals per level of the independent variable
+- A "Rare Outcome" is defined as an outcome that has either
+  - Less than or equal to a 5% probability of occurring by chance (α/"alpha" = 0.05)
+    - Remember that 2.5% of this is on the upper end of the distribution, 2.5% of this is on the lower end
+    - α/2 = 0.025
+  - Less than or equal to a 1% probability of occurring by chance (α/"alpha" = 0.01)
+    - Remember that 0.5% of this is on the upper end of the distribution, 0.5% of this is on the lower end
+    - α/2 = 0.005
+- Between the rare outcomes is `1 - α`, if α = 0.05, then `1 - α = 0.95`
+### Distribution of Raw Scores
+- So far, all distributions have been distributions of Individual Raw Scores
+### Distributions of Sample means
+- Every score in the distribution is a mean for a sample of N individuals
+- N is the constant number of individuals in each sample
+- Population of a distribution of sample means has
+  - Population mean
+  - Population standard deviation
+- The bigger the samples get, the standard deviations get smaller
+  - The standard deviation from the individuals (for IQ, 16) is divided by the square root of the sample mean size (N)
+  - If the N of sample means is 4, new standard deviation is 16/2 = 8
+  - If the N of sample means is 16, new standard deviation is 16/4 = 4
+  - If the N of sample means is 25, new standard deviation is 16/5 = 3.2
+  - If the N of sample means is 100, new standard deviation is 16/10 = 1.6
+  - If the N of sample means is 10,000, new standard deviation is 16/100 = 0.16
+### Probabilities and Z-Scores
+- As the Z-scores get bigger (or the absolute value of negative Z-scores gets larger), the probabilities get smaller
+### Cut Off Values
+- Z = 1.96 cuts off the upper 2.5% (0.025)
+- Z = -1.96 cuts off the lower 2.5% (0.025)
+- Z = 2.576 cuts off the upper 0.5% (0.005)
+- Z = -2.576 cuts off the lower 0.05% (0.005)
+
+### Hypothesis Testing
+- Steps of a Hypothesis test
+  1. Write hypothesis
+  2. Set alpha level
+  3. Collect data, calculate test statistic
+  4. Make decision
+     - If |test statistic value| >= |Critical test statistic value|, then we say the treatment had an effect or "reject the null hypothesis"
+       - 'p <= alpha'
+     - If |test statistic value| < |Critical test statistic value|, then we say the treatment had no effect
+       - 'p > alpha'
+- H<sub>o</sub>: treatment had no effect
+  - Null hypothesis
+  - The null hypothesis says that there is no treatment effect, so the population mean ("mu") is still 100
+- H1: treatment had an effect
+  - Alternative hypothesis
+  - If the treatment did have an effect, we know that the population mean ("mu") is not equal to 100
+#### Experiment
+- Type I error
+  - If treatment has no effect, but researcher concludes the treatment has an effect
+- Type II error
+  - If treatment has an effect, but researcher concludes the treatment has no effect
+- Power
+  - The treatment has an effect, and the researcher concludes it does
+
+|                                   | Fail to reject Ho                | Reject Ho                  |
+|-----------------------------------|----------------------------------|----------------------------|
+| Ho: true/treatment has no effect  | correct decision                 | Type I error "False alarm" | 
+| Ho: false/treatment has an effect | Type II error "Missed discovery" | Correct decision / "Power" |
+
+- We say that we "failed to reject Ho/the null hypothesis"
+- ![experiment error types](./images/experiment-error-types.png)
+- **Fail to reject Ho (Do NOT reject Ho)**
+  - Find no evidence to support conclusion that Ho is False
+  - This DOES NOT MEAN Ho is True
+- ![experiement error types distributions](./images/experiment-error-types-distributions.png)
+- Probability of making a type I error is the area above alpha
+- Probability of making a type II error is the area below alpha
+- Using alpha of 0.05
+  - Increases probability of making Type I error
+  - Decreases probability of making Type II error
+  - Power increases
+- Using alpha of 0.01
+  - Decreases probability of making Type I error
+  - Increases probability of making Type II error
+  - Decreases power
+- "Researcher wants to minimize the probability of making a Type I error..."
+  - Use alpha = 0.01
+- "Researcher wants to minimize the probability of making a Type II error..."
+  - Use alpha = 0.05
+- "Researcher wants to maximize Power..."
+  - Use alpha = 0.05
+- ![example distribution](./images/experiment-error-types-example.png)
+- ![example distribution 2](./images/experiment-error-types-example-2.png)
+- ![experiment hypothesis testing](./images/experiment-hypothesis-testing.png)
+### Z-Test
+- $Z = \frac{\bar{X} - \mu}{\sigma_{\bar{x}}}$
+  - $\bar{x}$ = sample mean
+  - $\mu$ = population mean
+  - $\sigma_{\bar{x}}$ = population standard deviation
+- If obtained value is positive, you use the positive $Z_{crit}$ value
+- If obtained value is negative, you use the negative $Z_{crit}$ value
+- If you use 0.05, the $Z_{crit}$ value is $\pm1.96$
+- If you use 0.01, the $Z_{crit}$ value is $\pm2.576$
+- If $Z_{obt}$ is less than or equal to $Z_{crit}$ then you fail to reject $H_o$
+- If $Z_{obt}$ is greater than $Z_{crit}$, then you reject $H_o$
+- First steps to solving problems
+  - Pick out each item
+    - $\mu_u$ = untreated population mean
+    - $\sigma$ = population standard deviation
+    - $N$ = number of participants in the study
+- Once we know that the treatment has an effect
+  - Estimating treatment effect
+    - "Cohen's D" = absolute value of x-bar minus mu over sigma x
+    - $d = \frac{\left|\bar{x} - \mu\right|}{\sigma_x}$
+#### Python Functions
+```python
+import numpy as np
+
+def one_sample_z_test(
+        population_mean,
+        population_sd,
+        sample_number,
+        sample_mean,
+        alpha
+    ):
+    sample_sigma = population_sd / np.sqrt(sample_number)
+    z_statistic = (sample_mean - population_mean) / sample_sigma
+    reject = False
+    if alpha == 0.05:
+        if np.abs(z_statistic) >= 2.576:
+            reject = True
+    elif alpha == 0.01:
+        if np.abs(z_statistic) >= 1.96:
+            reject = True
+    d = (sample_mean - population_mean) / population_sd
+    ninety_five_ci_lower = sample_mean - (sample_sigma * 1.96)
+    ninety_five_ci_upper = sample_mean + (sample_sigma * 1.96)
+    ninety_nine_ci_lower = sample_mean - (sample_sigma * 2.576)
+    ninety_nine_ci_upper = sample_mean + (sample_sigma * 2.576)
+    results = {
+        "sample sigma": sample_sigma,
+        "z-statistic": z_statistic,
+        "reject Ho": reject,
+        "d" : d,
+        "95% CI": [ninety_five_ci_lower, ninety_five_ci_upper],
+        "99% CI": [ninety_nine_ci_lower, ninety_nine_ci_upper]
+    }
+    return results
+
+one_sample_z_test(
+    population_mean=80,
+    population_sd=5,
+    sample_number=7,
+    sample_mean=88,
+    alpha=0.05
+)
+```
+
+
+### T-Test
+- If a problem says the "population standard deviation is unknown"
+- When we reject $H_o$, the best single point estimate for the treated population mean is the sample mean
+  - We aren't super sure of this, so we use a confidence interval
+- When we don't know the population standard deviation, we need to calculate the sample standard deviation
+  - This sample standard deviation is a "descriptive" statistic of our particular sample
+  - This becomes our best estimate of the population standard deviation
+  - This is considered a "biased" estimate
+    - It describes our data correctly, but it is "biased" in the context of the larger population
+  - This is not a good estimate for the entire population, because it underestimates the population values
+- We want to be able to apply a correction that corrects small samples more than it does big samples
+  - Sample SD is more biased when you have a smaller sample
+  - The correction is to divide by N - 1 instead of N
+  - $\hat{s}^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2$
+  - $\hat{s} = \sqrt{\hat{s}^2}$
+- For midterm two, we will only be using unbiased estimates
+- When we have a data set, it is assumed that the mean of the data set was determined before we collected the data
+- "Degrees of freedom" = $df$
+- The t distribution is an approximation of the normal curve
+  - The greater the degrees of freedom, your critical values match those from the z-test
+#### Python code
+```python
+import numpy as np
+from scipy import stats
+
+def one_sample_t_test(
+        population_mean,
+        sample_number,
+        sample_mean,
+        sample_data,
+        alpha
+    ):
+    degrees_of_freedom = sample_number - 1
+    t_critical = stats.t.ppf(1 - alpha / 2, sample_number - 1)
+    sum_squares = np.sum((sample_data - sample_mean)**2)
+    s_hat_x = np.sqrt(sum_squares / degrees_of_freedom)
+    s_hat_x_bar = s_hat_x / np.sqrt(sample_number)
+    t_statistic = (sample_mean - population_mean) / s_hat_x_bar
+    reject = False
+    if np.abs(t_statistic) >= t_critical:
+        reject = True
+    d_hat = np.abs(sample_mean - population_mean) / s_hat_x
+    r_squared = t_statistic**2 / (t_statistic**2 + degrees_of_freedom)
+    ninety_five_ci_lower = sample_mean - s_hat_x_bar * stats.t.ppf(1 - (0.05 / 2), degrees_of_freedom)
+    ninety_five_ci_upper = sample_mean + s_hat_x_bar * stats.t.ppf(1 - (0.05 / 2), degrees_of_freedom)
+    ninety_nine_ci_lower = sample_mean - s_hat_x_bar * stats.t.ppf(1 - (0.01 / 2), degrees_of_freedom)
+    ninety_nine_ci_upper = sample_mean + s_hat_x_bar * stats.t.ppf(1 - (0.01 / 2), degrees_of_freedom)
+    results = {
+        "s_hat_x": s_hat_x,
+        "s_hat_x_bar": s_hat_x_bar,
+        "degrees of freedom": degrees_of_freedom,
+        "t-statistic": t_statistic,
+        "t-critical": t_critical,
+        "reject Ho": reject,
+        "effect size (d_hat)": d_hat,
+        "coefficient of determination (r**2)": r_squared,
+        "coefficient of non-determination (1 - r**2)": 1 - r_squared,
+        "95% CI": [ninety_five_ci_lower, ninety_five_ci_upper],
+        "99% CI": [ninety_nine_ci_lower, ninety_nine_ci_upper]
+    }
+    return results
+
+array_one = np.array([60, 62, 58, 64, 56, 66, 54, 68, 52])
+one_sample_t_test(
+    population_mean=70,
+    sample_number=9,
+    sample_mean=60,
+    sample_data=array_one,
+    alpha=0.01
+)
+array_two = np.array([70, 72, 68, 73, 67, 74, 66, 71, 69, 72, 68])
+one_sample_t_test(
+    population_mean=65,
+    sample_number=11,
+    sample_mean=70,
+    sample_data=array_two,
+    alpha=0.05
+)
+```
+
+
+|            | z-test | t-test  | ANOVA   |
+|------------|--------|---------|---------|
+| $\mu_x$    | given  | given   | unknown |
+| $\sigma_x$ | given  | unknown | unknown |
+
