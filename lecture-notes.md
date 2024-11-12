@@ -403,13 +403,13 @@ def one_sample_t_test(
     ninety_nine_ci_lower = sample_mean - s_hat_x_bar * stats.t.ppf(1 - (0.01 / 2), degrees_of_freedom)
     ninety_nine_ci_upper = sample_mean + s_hat_x_bar * stats.t.ppf(1 - (0.01 / 2), degrees_of_freedom)
     results = {
-        "s_hat_x": s_hat_x,
-        "s_hat_x_bar": s_hat_x_bar,
+        "s_hat_x": np.round(s_hat_x, 4),
+        "s_hat_x_bar": np.round(s_hat_x_bar, 4),
         "degrees of freedom": degrees_of_freedom,
-        "t-statistic": t_statistic,
+        "t-statistic": np.round(t_statistic, 4),
         "t-critical": t_critical,
         "reject Ho": reject,
-        "effect size (d_hat)": d_hat,
+        "effect size (d_hat)": np.round(d_hat, 4),
         "coefficient of determination (r**2)": r_squared,
         "coefficient of non-determination (1 - r**2)": 1 - r_squared,
         "95% CI": [ninety_five_ci_lower, ninety_five_ci_upper],
@@ -435,6 +435,71 @@ one_sample_t_test(
 )
 ```
 
+### Analysis of Variance - ANOVA
+- 
+| Source | Sum of Squares (SS) | 
+#### Python
+```python
+import numpy as np
+from scipy import stats
+
+def two_sample_between_subjects_anova(
+        treated_sample,
+        untreated_sample,
+        alpha
+):
+    treated_sample_mean = np.mean(treated_sample)
+    sum_squares_treated_sample = np.sum((treated_sample - treated_sample_mean)**2)
+    untreated_sample_mean = np.mean(untreated_sample)
+    sum_squares_untreated_sample = np.sum((untreated_sample - untreated_sample_mean)**2)
+    grand_mean = np.mean(np.concatenate((treated_sample, untreated_sample)))
+    ss_between_group = (len(treated_sample) * (treated_sample_mean - grand_mean)**2) + (len(untreated_sample) * (untreated_sample_mean - grand_mean)**2)
+    ss_within_group = sum_squares_treated_sample + sum_squares_untreated_sample
+    df_between_group = 1
+    df_within_group = (len(treated_sample) - 1) + (len(untreated_sample) - 1)
+    ms_between_group = ss_between_group / df_between_group
+    ms_within_group = ss_within_group / df_within_group
+    f_statistic = ms_between_group / ms_within_group
+    f_critical = stats.f.ppf(q=1-alpha, dfn=df_between_group, dfd=df_within_group)
+    reject = False
+    if np.abs(f_statistic) >= np.abs(f_critical):
+        reject = True
+    if len(treated_sample) == len(untreated_sample):
+        n = len(treated_sample)
+    else:
+        n = 2 / (1/len(treated_sample)) + (1/len(untreated_sample))
+    ninety_five_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.05, 2, df_within_group)
+    ninety_five_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.05, 2, df_within_group)
+    ninety_nine_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.01, 2, df_within_group)
+    ninety_nine_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.01, 2, df_within_group)
+    eta_squared = ss_between_group / (ss_between_group + ss_within_group)
+    omega_squared = (ss_between_group - df_between_group * ms_within_group) / (ss_between_group + ss_within_group + ms_within_group)
+    results = {
+        "f_statistic": f_statistic,
+        "f_critical": f_critical,
+        "reject": reject,
+        "95% CI": [ninety_five_ci_lower, ninety_five_ci_upper],
+        "99% CI": [ninety_nine_ci_lower, ninety_nine_ci_upper],
+        "eta squared (biased)": eta_squared,
+        "omega squared (unbiased)": omega_squared,
+        "source table": {
+            "between_group": {"ss": ss_between_group, "df": df_between_group, "ms": ms_between_group},
+            "within_group": {"ss": ss_within_group, "df": df_within_group, "ms": ms_within_group}
+        }
+    }
+    return results
+
+# Even sample sizes
+treated_bt_sample = np.array([65, 64, 63, 62, 60, 60, 58, 57, 56, 55])
+untreated_ct_sample = np.array([76, 75, 74, 72, 70, 70, 69, 67, 65, 62])
+two_sample_between_subjects_anova(treated_bt_sample, untreated_ct_sample, 0.01)
+
+# Uneven sample sizes
+treated_cbt_sample = np.array([87, 84, 82, 81, 79, 77, 76, 73, 70, 71])
+untreated_ct_sample = np.array([78, 73, 72, 70, 68, 59])
+two_sample_between_subjects_anova(treated_cbt_sample, untreated_ct_sample, 0.05)
+
+```
 
 |            | z-test | t-test  | ANOVA   |
 |------------|--------|---------|---------|
