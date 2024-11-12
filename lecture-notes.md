@@ -313,6 +313,7 @@ from random import sample
 #### Python Functions
 ```python
 import numpy as np
+from scipy.stats import norm
 
 def one_sample_z_test(
         population_mean,
@@ -324,12 +325,9 @@ def one_sample_z_test(
     sample_sigma = population_sd / np.sqrt(sample_number)
     z_statistic = (sample_mean - population_mean) / sample_sigma
     reject = False
-    if alpha == 0.05:
-        if np.abs(z_statistic) >= 2.576:
-            reject = True
-    elif alpha == 0.01:
-        if np.abs(z_statistic) >= 1.96:
-            reject = True
+    z_critical = np.round(norm.ppf(1 - alpha / 2), 3)
+    if np.abs(z_statistic) >= z_critical:
+        reject = True
     d = (sample_mean - population_mean) / population_sd
     ninety_five_ci_lower = sample_mean - (sample_sigma * 1.96)
     ninety_five_ci_upper = sample_mean + (sample_sigma * 1.96)
