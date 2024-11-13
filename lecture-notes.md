@@ -497,6 +497,11 @@ treated_cbt_sample = np.array([87, 84, 82, 81, 79, 77, 76, 73, 70, 71])
 untreated_ct_sample = np.array([78, 73, 72, 70, 68, 59])
 two_sample_between_subjects_anova(treated_cbt_sample, untreated_ct_sample, 0.05)
 
+def two_sample_within_subjects_anova(
+        treated_sample,
+        untreated_sample,
+        alpha
+):
 ```
 
 |            | z-test | t-test  | ANOVA   |
