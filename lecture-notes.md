@@ -434,12 +434,29 @@ one_sample_t_test(
 ```
 
 ### Analysis of Variance - ANOVA
-- 
+- If group sizes are not the same, the only change is that we need to calculate the harmonic mean
+  - $n_h = \frac{K}{\frac{1}{n_1} + \frac{1}{n_2}}$
+- "Between subjects" = "independent samples"
+  - Meaning there is no 1:1 relationship between people in one level and people in another level
+  - If you see "N people were randomly assigned to each group", then it is between subjects
+- "Within subjects" = "dependent samples"
+  - There is a 1:1 relationship between each person in one level and a person in another level
+    - One way is that each person is in each condition
+    - People in groups could also be related genetically (MZ twins / DZ twins / siblings / parent & offspring)
+    - Does not matter the degree of genetic relationship across studies, but needs to be the same within a study
+  - You will typically be able to determine which type of analysis based on the scenario
+    - For example "all participants learned one set of material one way and then all participants learned another way"
+    - "pair of twins were randomly assigned such that..."
+  - Because each person is related, we can calculate a mean for each person
+
 | Source | Sum of Squares (SS) | 
 #### Python
 ```python
 import numpy as np
 from scipy import stats
+
+def harmonic_mean(a, b):
+    return 2 / ((1/a) + (1/b))
 
 def two_sample_between_subjects_anova(
         treated_sample,
@@ -465,7 +482,7 @@ def two_sample_between_subjects_anova(
     if len(treated_sample) == len(untreated_sample):
         n = len(treated_sample)
     else:
-        n = 2 / (1/len(treated_sample)) + (1/len(untreated_sample))
+        n = harmonic_mean(len(treated_sample), len(untreated_sample))
     ninety_five_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.05, 2, df_within_group)
     ninety_five_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.05, 2, df_within_group)
     ninety_nine_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_within_group/n) * stats.studentized_range.ppf(1-0.01, 2, df_within_group)
@@ -480,6 +497,7 @@ def two_sample_between_subjects_anova(
         "99% CI": [ninety_nine_ci_lower, ninety_nine_ci_upper],
         "eta squared (biased)": eta_squared,
         "omega squared (unbiased)": omega_squared,
+        "grand mean": grand_mean,
         "source table": {
             "between_group": {"ss": ss_between_group, "df": df_between_group, "ms": ms_between_group},
             "within_group": {"ss": ss_within_group, "df": df_within_group, "ms": ms_within_group}
