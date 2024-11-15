@@ -520,6 +520,58 @@ def two_sample_within_subjects_anova(
         untreated_sample,
         alpha
 ):
+    treated_sample_mean = np.mean(treated_sample)
+    sum_squares_treated_sample = np.sum((treated_sample - treated_sample_mean)**2)
+    untreated_sample_mean = np.mean(untreated_sample)
+    sum_squares_untreated_sample = np.sum((untreated_sample - untreated_sample_mean)**2)
+    grand_mean = np.mean(np.concatenate((treated_sample, untreated_sample)))
+    person_mean = (treated_sample + untreated_sample) / 2
+    ss_between_group = (len(treated_sample) * (treated_sample_mean - grand_mean)**2) + (len(untreated_sample) * (untreated_sample_mean - grand_mean)**2)
+    ss_within_group = sum_squares_treated_sample + sum_squares_untreated_sample
+    ss_between_people = np.sum(2 * (person_mean - grand_mean)**2)
+    ss_true_error = ss_within_group - ss_between_people
+    df_between_group = 1
+    df_within_group = (len(treated_sample) - 1) + (len(untreated_sample) - 1)
+    df_between_people = len(treated_sample) - 1
+    df_true_error = df_within_group - df_between_people
+    ms_between_group = ss_between_group / df_between_group
+    ms_true_error = ss_true_error / df_true_error
+    f_statistic = ms_between_group / ms_true_error
+    f_critical = stats.f.ppf(q=1-alpha, dfn=df_between_group, dfd=df_true_error)
+    reject = False
+    if np.abs(f_statistic) >= np.abs(f_critical):
+        reject = True
+    if len(treated_sample) == len(untreated_sample):
+        n = len(treated_sample)
+    else:
+        n = harmonic_mean(len(treated_sample), len(untreated_sample))
+    ninety_five_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_true_error/n) * stats.studentized_range.ppf(1-0.05, 2, df_true_error)
+    ninety_five_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_true_error/n) * stats.studentized_range.ppf(1-0.05, 2, df_true_error)
+    ninety_nine_ci_lower = (treated_sample_mean - untreated_sample_mean) - np.sqrt(ms_true_error/n) * stats.studentized_range.ppf(1-0.01, 2, df_true_error)
+    ninety_nine_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_true_error/n) * stats.studentized_range.ppf(1-0.01, 2, df_true_error)
+    eta_squared = ss_between_group / (ss_between_group + ss_true_error)
+    omega_squared = (ss_between_group - (df_between_group * ms_true_error)) / (ss_between_group + ss_true_error + ms_true_error)
+    results = {
+        "f_statistic": f_statistic,
+        "f_critical": f_critical,
+        "reject": reject,
+        "95% CI": [ninety_five_ci_lower, ninety_five_ci_upper],
+        "99% CI": [ninety_nine_ci_lower, ninety_nine_ci_upper],
+        "eta squared (biased)": eta_squared,
+        "omega squared (unbiased)": omega_squared,
+        "grand mean": grand_mean,
+        "source table": {
+            "between_group": {"ss": ss_between_group, "df": df_between_group, "ms": ms_between_group},
+            "within_group": {"ss": ss_within_group, "df": df_within_group},
+            "between_people": {"ss": ss_between_people, "df": df_between_people},
+            "true_error": {"ss": ss_true_error, "df": df_true_error, "ms": ms_true_error}
+        }
+    }
+    return results
+
+array_blue = np.array([65, 66, 64, 68, 62, 70, 60, 72, 58, 67, 63])
+array_white = np.array([63, 66, 60, 64, 62, 70, 56, 68, 58, 67, 59])
+two_sample_within_subjects_anova(array_blue, array_white, 0.05)
 ```
 
 |            | z-test | t-test  | ANOVA   |
