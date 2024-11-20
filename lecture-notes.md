@@ -448,6 +448,8 @@ one_sample_t_test(
     - For example "all participants learned one set of material one way and then all participants learned another way"
     - "pair of twins were randomly assigned such that..."
   - Because each person is related, we can calculate a mean for each person
+- For a within subjects ANOVA, the degrees of freedom you will use for looking up f-values are between group and between people
+- ANOVA is also sometimes referred to as an "f test"
 
 | Source | Sum of Squares (SS) | 
 #### Python
@@ -579,3 +581,7 @@ two_sample_within_subjects_anova(array_blue, array_white, 0.05)
 | $\mu_x$    | given  | given   | unknown |
 | $\sigma_x$ | given  | unknown | unknown |
 
+
+### Midterm Review
+- Most important thing is to know which type of analysis to do
+- 
