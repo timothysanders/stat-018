@@ -246,12 +246,12 @@ from random import sample
        - 'p <= alpha'
      - If |test statistic value| < |Critical test statistic value|, then we say the treatment had no effect
        - 'p > alpha'
-- H<sub>o</sub>: treatment had no effect
+- $H_o$: treatment had no effect
   - Null hypothesis
-  - The null hypothesis says that there is no treatment effect, so the population mean ("mu") is still 100
-- H1: treatment had an effect
+  - The null hypothesis says that there is no treatment effect, so the population mean ("mu"/$\mu$) is still 100
+- $H_1$: treatment had an effect
   - Alternative hypothesis
-  - If the treatment did have an effect, we know that the population mean ("mu") is not equal to 100
+  - If the treatment did have an effect, we know that the population mean ("mu"/$\mu$) is not equal to 100
 #### Experiment
 - Type I error
   - If treatment has no effect, but researcher concludes the treatment has an effect
@@ -260,33 +260,33 @@ from random import sample
 - Power
   - The treatment has an effect, and the researcher concludes it does
 
-|                                   | Fail to reject Ho                | Reject Ho                  |
-|-----------------------------------|----------------------------------|----------------------------|
-| Ho: true/treatment has no effect  | correct decision                 | Type I error "False alarm" | 
-| Ho: false/treatment has an effect | Type II error "Missed discovery" | Correct decision / "Power" |
+|                                      | Fail to reject $H_o$             | Reject $H_o$               |
+|--------------------------------------|----------------------------------|----------------------------|
+| $H_o$: true/treatment has no effect  | correct decision                 | Type I error "False alarm" | 
+| $H_o$: false/treatment has an effect | Type II error "Missed discovery" | Correct decision / "Power" |
 
 - We say that we "failed to reject Ho/the null hypothesis"
 - ![experiment error types](./images/experiment-error-types.png)
-- **Fail to reject Ho (Do NOT reject Ho)**
-  - Find no evidence to support conclusion that Ho is False
-  - This DOES NOT MEAN Ho is True
+- **Fail to reject $H_o$ (Do NOT reject $H_o$)**
+  - Find no evidence to support conclusion that $H_o$ is False
+  - This DOES NOT MEAN $H_o$ is True
 - ![experiement error types distributions](./images/experiment-error-types-distributions.png)
 - Probability of making a type I error is the area above alpha
 - Probability of making a type II error is the area below alpha
-- Using alpha of 0.05
+- Using $\alpha = 0.05$
   - Increases probability of making Type I error
   - Decreases probability of making Type II error
   - Power increases
-- Using alpha of 0.01
+- Using $\alpha = 0.01$
   - Decreases probability of making Type I error
   - Increases probability of making Type II error
   - Decreases power
 - "Researcher wants to minimize the probability of making a Type I error..."
-  - Use alpha = 0.01
+  - Use $\alpha = 0.01$
 - "Researcher wants to minimize the probability of making a Type II error..."
-  - Use alpha = 0.05
+  - Use $\alpha = 0.05$
 - "Researcher wants to maximize Power..."
-  - Use alpha = 0.05
+  - Use $\alpha = 0.05$
 - ![example distribution](./images/experiment-error-types-example.png)
 - ![example distribution 2](./images/experiment-error-types-example-2.png)
 - ![experiment hypothesis testing](./images/experiment-hypothesis-testing.png)
@@ -584,4 +584,71 @@ two_sample_within_subjects_anova(array_blue, array_white, 0.05)
 
 ### Midterm Review
 - Most important thing is to know which type of analysis to do
-- 
+
+## One-Way Between Subjects ANOVA
+- Null Hypothesis
+  - $\mu_{red} = \mu_{green} = \mu_{white}$
+  - This is basically the same as our null hypothesis for any other test
+- Alternative hypothesis
+  - "Not all $\mu$ are equal"
+- Setting power is the same as other tests
+  - "Max power" = 0.05
+  - "Minimize type I" = 0.01
+  - "Minimize type II" = 0.05
+  - etc.
+- Sum of squares (within group)
+  - $SS_{wg} = SS_{red} + SS_{green} + SS_{white}$
+- Sum of squares (between group)
+  - $SS_{bg} = n_1(\bar{x}_1 - \bar{x}_{..})^2 + n_2(\bar{x}_2 - \bar{x}_{..})^2 + n_3(\bar{x}_3 - \bar{x}_{..})^2$
+- Degrees of freedom (within group)
+  - $df_{wg} = (n - 1) + (n - 1) + (n - 1)$
+- Degrees of freedom (between group)
+  - $k - 1$
+- Proportion of Total variation in the DV
+  - 
+- Post-hoc analysis
+  - Need to compare the means between the different groups
+  - It doesn't matter which order we do these in, but we need to compare each group
+  - For example, red to green, red to white, and green to white
+  - Alpha has to be the same as the ANOVA
+  - For each group, we subtract the means and then divide by the standard deviation
+    - If the resulting value is greater than your Q critical value, then you reject the null hypothesis
+  - $\sqrt{\frac{MS_{wg}}n}$
+  - For our q critical value, we want to use $q(k, df_{wg})$
+  - If we reject the null hypothesis, then we calculate a confidence interval
+  - $\bar{x_1} - \bar{x_2} \pm \sqrt{\frac{MS_{wg}}n}(q(k, df_{wg}))$
+## One way within subjects ANOVA
+- This is performed in the same way as the two-sample within-subjects ANOVA
+
+## Correlation & Regression
+- "A researcher wants to investigate if there is a relationship between..."
+- Predictor and Criterion variable
+  - Predictor variable is usually called $X$
+  - Criterion variable is usually called $y$
+- Your predictor variable is the independent variable
+- The criterion variable is the predicted output, or dependent variable
+- We are looking at the pattern of the results
+  - X variable is on the x-axis (horizontal), y variable is on the y-axis (vertical)
+- Learning Pearson product moment coefficient, used when for both variables are measured in interval ratio data
+- The output, $r$, can be anywhere between -1.0 and 1.0
+  - The sign indicates whether it is a positive or negative correlation/relationship
+  - 0 represents "no relationship"
+  - Whether or not a relationship is positive or negative does not indicate how strong the relationship is, that is measured by the absolute value of the number
+- Our initial correlation $r$, only tells us if there is a correlation in the sample
+  - We need a hypothesis to test if there is a correlation in the population
+  - $H_o: \rho = 0$
+  - $H_1: \rho \ne 0$
+- For correlation and regression, we use two degrees of freedom, instead of 1
+  - For example, if there are nine values in our data set
+  - $t(7)_{.05/2} = 2.365$
+- If our t-test rejects $H_o$, then we have a correlation within our population
+```python
+import numpy as np
+
+def correlation(array_one, array_two):
+    numerator = np.sum((array_one - np.mean(array_one)) * (array_two - np.mean(array_two)))
+    denominator = np.sqrt(np.sum((array_one - np.mean(array_one))**2))
+
+midterm_scores = np.array([70, 72, 68, 74, 66, 76, 64, 78, 62])
+final_scores = np.array([60, 63, 57, 63, 57, 64, 56, 65, 55])
+```

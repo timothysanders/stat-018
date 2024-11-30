@@ -105,7 +105,7 @@ def two_sample_between_subjects_anova(
     eta_squared = ss_between_group / (ss_between_group + ss_within_group)
     omega_squared = (ss_between_group - df_between_group * ms_within_group) / (ss_between_group + ss_within_group + ms_within_group)
     if df_within_group > 20:
-        print(f"WARNING: Validate Q value from table of critical values for (2, {df_within_group}")
+        print(f"WARNING: Validate Q value from table of critical values for (2, {df_within_group})")
     results = {
         "f_statistic": f_statistic,
         "f_critical": f_critical,
@@ -159,6 +159,8 @@ def two_sample_within_subjects_anova(
     ninety_nine_ci_upper = (treated_sample_mean - untreated_sample_mean) + np.sqrt(ms_true_error/n) * stats.studentized_range.ppf(1-0.01, 2, df_true_error)
     eta_squared = ss_between_group / (ss_between_group + ss_true_error)
     omega_squared = (ss_between_group - (df_between_group * ms_true_error)) / (ss_between_group + ss_true_error + ms_true_error)
+    if df_between_people > 20:
+        print(f"WARNING: Validate Q value from table of critical values for (2, {df_between_people}")
     results = {
         "f_statistic": f_statistic,
         "f_critical": f_critical,

@@ -10,6 +10,7 @@
 
 - When reporting mean, **ALWAYS** report standard deviation and variance (s and s<sup>2</sup>)
 - When reporting median, **ALWAYS** report Interquartile Range (IQR)
+- For interval / ratio data, always also report skew & kurtosis, regardless of which central tendency /variability measures you report
 
 ### Median
 - 50% of scores above, 50% of scores below
