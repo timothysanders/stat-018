@@ -641,7 +641,22 @@ two_sample_within_subjects_anova(array_blue, array_white, 0.05)
 - For correlation and regression, we use two degrees of freedom, instead of 1
   - For example, if there are nine values in our data set
   - $t(7)_{.05/2} = 2.365$
-- If our t-test rejects $H_o$, then we have a correlation within our population
+- If our t-test rejects $H_o$, then we have a correlation within our **population**
+  - $r$ describes if there is a relationship in our sample specifically
+- Correlation coefficients are not normally distributed, so we would have to convert $r$ to "z prime"
+  - This is beyond the scope of this class, so we are not calculating these confidence intervals
+  - If a question shows up asking "is it appropriate to calculate confidence interval on r..."
+    - If we reject $H_o$ then yes, if we do not reject, then no
+- Our regression line that we draw through our points is called "y hat"
+  - The line is placed such that the "sum of (y - y prime squared)" is a minimum
+    - This is minimizing our error
+  - The line is calculated in the same way as "y = mx + b"
+    - "m" = slope
+    - "b" = y-intercept
+  - Our regression line will be notated as $\hat{y} = a + b(x)$
+  - Only calculate regression line when you have rejected $H_o$, if you do not reject, there is no relationship and you can't use a regression for it
+  - r squared is the proportion of variation in the criterion that is explained by the predictor
+- We can also calculate a standard deviation around the regression line, $S_{y \cdot x}$
 ```python
 import numpy as np
 
